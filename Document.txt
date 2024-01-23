@@ -1,0 +1,40 @@
+commands
+
+#version check
+.\bin\windows\kafka-topics.bat --version
+
+Run the following commands in order to start all services in the correct order:
+# Start the ZooKeeper service
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+Open another terminal session and run:
+# Start the Kafka broker service
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+#Open another terminal and create topic in kafka server to store events
+.\bin\windows\kafka-topics.bat --create --topic topic-example --bootstrap-server localhost:9092
+
+#Write some events into the topics
+.\bin\windows\kafka-console-producer.bat --topic topic-example --bootstrap-server localhost:9092
+
+#Read some events from the topics
+read events from beginning
+.\bin\windows\kafka-console-consumer.bat --topic order_topics --from-beginning --bootstrap-server localhost:9092
+
+
+#check list of topics
+.\bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9092
+
+#check list of groups
+.\bin\windows\kafka-consumer-groups.bat --list --bootstrap-server localhost:9092
+
+#Describes a specific group
+.\bin\windows\kafka-consumer-groups.bat --describe --group stock --bootstrap-server localhost:9092
+
+#Stop zookeeper
+.\bin\windows\zookeeper-server-stop.bat .\config\zookeeper.properties
+#Stop Server
+.\bin\windows\kafka-server-stop.bat .\config\server.properties
+
+
+.\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partition 1 --topic <topic name>
